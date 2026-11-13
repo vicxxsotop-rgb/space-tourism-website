@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover the launch vehicle — the rocket-propelled craft that carries payloads from Earth's surface to orbit and beyond — on the Space Tourism technology page.">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&family=Barlow:wght@400&family=Bellefair&display=swap">
+  <link rel="stylesheet" href="./style.css">
+
+  <title>Space Tourism | Technology: Launch Vehicle</title>
+</head>
+<body class="technology">
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="header">
+    <a class="header__logo" href="./index.html">
+      <img src="./assets/logo.svg" alt="Space tourism home" width="48" height="48">
+    </a>
+
+    <span class="header__divider" aria-hidden="true"></span>
+
+    <button class="header__toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
+      <span class="sr-only">Menu</span>
+    </button>
+
+    <nav class="header__nav" id="primary-navigation" aria-label="Primary">
+      <ul class="header__list" role="list">
+        <li><a class="header__link" href="./index.html"><span class="header__number">00</span>Home</a></li>
+        <li><a class="header__link" href="./destination-moon.html"><span class="header__number">01</span>Destination</a></li>
+        <li><a class="header__link" href="./crew-commander.html"><span class="header__number">02</span>Crew</a></li>
+        <li><a class="header__link" href="./technology-vehicle.html" aria-current="page"><span class="header__number">03</span>Technology</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="technology__main" id="main" tabindex="-1">
+    <div class="technology__inner">
+      <h1 class="technology__title heading-5">
+        <span class="heading-5__number" aria-hidden="true">03</span>Space launch 101
+      </h1>
+
+      <div class="technology__image">
+        <picture>
+          <source media="(min-width: 75em)" srcset="./assets/image-launch-vehicle-portrait.jpg">
+          <img src="./assets/image-launch-vehicle-landscape.jpg" alt="" width="768" height="310">
+        </picture>
+      </div>
+
+      <div class="technology__info">
+        <nav class="technology__pagination" aria-label="Choose a technology">
+          <ol class="technology__number-list" role="list">
+            <li><a class="technology__number" href="./technology-vehicle.html" aria-current="page"><span aria-hidden="true">1</span><span class="sr-only">Launch vehicle</span></a></li>
+            <li><a class="technology__number" href="./technology-spaceport.html"><span aria-hidden="true">2</span><span class="sr-only">Spaceport</span></a></li>
+            <li><a class="technology__number" href="./technology-capsule.html"><span aria-hidden="true">3</span><span class="sr-only">Space capsule</span></a></li>
+          </ol>
+        </nav>
+
+        <div class="technology__explanation">
+          <p class="technology__label">The terminology…</p>
+          <h2 class="technology__name">Launch vehicle</h2>
+          <p class="technology__desc">A launch vehicle or carrier rocket is a rocket-propelled
+            vehicle used to carry a payload from Earth's surface to space, usually to Earth orbit
+            or beyond. Our WEB-X carrier rocket is the most powerful in operation. Standing 150
+            metres tall, it's quite an awe-inspiring sight on the launch pad!</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="./js/nav.js" defer></script>
+</body>
+</html>

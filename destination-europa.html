@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Visit Europa with Space Tourism — the smallest Galilean moon, an icy winter lover’s dream 628 million km from Earth.">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700&family=Barlow:wght@400&family=Bellefair&display=swap">
+  <link rel="stylesheet" href="./style.css">
+
+  <title>Space Tourism | Destination: Europa</title>
+</head>
+<body class="destination">
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="header">
+    <a class="header__logo" href="./index.html">
+      <img src="./assets/logo.svg" alt="Space tourism home" width="48" height="48">
+    </a>
+
+    <span class="header__divider" aria-hidden="true"></span>
+
+    <button class="header__toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
+      <span class="sr-only">Menu</span>
+    </button>
+
+    <nav class="header__nav" id="primary-navigation" aria-label="Primary">
+      <ul class="header__list" role="list">
+        <li><a class="header__link" href="./index.html"><span class="header__number">00</span>Home</a></li>
+        <li><a class="header__link" href="./destination-moon.html" aria-current="page"><span class="header__number">01</span>Destination</a></li>
+        <li><a class="header__link" href="./crew-commander.html"><span class="header__number">02</span>Crew</a></li>
+        <li><a class="header__link" href="./technology-vehicle.html"><span class="header__number">03</span>Technology</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="destination__main" id="main" tabindex="-1">
+    <div class="destination__inner">
+      <h1 class="destination__title heading-5">
+        <span class="heading-5__number" aria-hidden="true">01</span>Pick your destination
+      </h1>
+
+      <div class="destination__content">
+        <div class="destination__image">
+          <img src="./assets/image-europa.png" alt="Europa" width="445" height="445">
+        </div>
+
+        <div class="destination__info">
+          <nav class="destination__tabs" aria-label="Choose a destination">
+            <ul class="destination__tab-list" role="list">
+              <li><a class="destination__tab" href="./destination-moon.html">Moon</a></li>
+              <li><a class="destination__tab" href="./destination-mars.html">Mars</a></li>
+              <li><a class="destination__tab" href="./destination-europa.html" aria-current="page">Europa</a></li>
+              <li><a class="destination__tab" href="./destination-titan.html">Titan</a></li>
+            </ul>
+          </nav>
+
+          <h2 class="destination__name">Europa</h2>
+
+          <p class="destination__desc">The smallest of the four Galilean moons orbiting Jupiter,
+            Europa is a winter lover’s dream. With an icy surface, it’s perfect for a bit of ice
+            skating, curling, hockey, or simple relaxation in your snug wintery cabin.</p>
+
+          <hr class="destination__line">
+
+          <dl class="destination__stats">
+            <div class="destination__stat">
+              <dt class="subheading-2">Avg. distance</dt>
+              <dd class="destination__stat-value subheading-1">628 mil. km</dd>
+            </div>
+            <div class="destination__stat">
+              <dt class="subheading-2">Est. travel time</dt>
+              <dd class="destination__stat-value subheading-1">3 years</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="./js/nav.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,1451 @@
+/* ==========================================================================
+   Space Tourism — stylesheet
+   Sections are numbered and the cascade gets more specific downwards, so no
+   rule ever needs an override flag. Base styles are the mobile design; the tablet
+   (`48em`) and desktop (`75em`) designs layer on in section 8.
+   Every value here comes from design/DESIGN-SPEC.md.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. Design tokens
+   ========================================================================== */
+
+:root {
+  /* Colours */
+  --clr-dark: #0b0d17;          /* page background */
+  --clr-light: #d0d6f9;         /* body text */
+  --clr-white: #ffffff;         /* headings, active states */
+
+  /* Translucent surfaces and rules (from the nav/panel components) */
+  --clr-surface: rgba(255, 255, 255, 0.05);   /* nav bar fill */
+  --clr-surface-strong: rgba(11, 13, 23, 0.15); /* mobile panel fill */
+  --clr-line: rgba(255, 255, 255, 0.25);       /* nav divider, stats rule, tech number border */
+  --clr-line-strong: rgba(255, 255, 255, 0.5); /* hovered tab underline, hovered crew dot */
+  --clr-dot: rgba(255, 255, 255, 0.17);        /* inactive crew dot */
+  --clr-hover-wash: rgba(255, 255, 255, 0.1); /* hover ring on EXPLORE */
+
+  /* Font families */
+  --font-display: "Bellefair", serif;
+  --font-condensed: "Barlow Condensed", sans-serif;
+  --font-body: "Barlow", sans-serif;
+
+  /* Font weights */
+  --fw-regular: 400;
+  --fw-bold: 700;
+
+  /* Type scale — sizes */
+  --fs-display: 9rem;           /* 144px — home title (tablet + desktop) */
+  --fs-display-sm: 5rem;        /* 80px  — home title (mobile) */
+  --fs-title-lg: 6rem;          /* 96px  — destination name (desktop) */
+  --fs-title-md: 3.5rem;        /* 56px  — crew / technology name (desktop) */
+  --fs-title-sm: 2rem;          /* 32px  — crew role, EXPLORE label, tech number (desktop) */
+  --fs-title-xs: 1.5rem;        /* 24px  — crew name (mobile), crew role + tech number (tablet) */
+  --fs-heading-7: 1.125rem;     /* 18px  — crew role, technology label + number (mobile) */
+  --fs-sub-1: 1.75rem;          /* 28px  — stats value (Bellefair) */
+  --fs-heading-5: 1.75rem;      /* 28px  — section titles, home tagline (desktop) */
+  --fs-heading-6: 1.25rem;      /* 20px  — section titles (tablet) */
+  --fs-sub-2: 0.875rem;         /* 14px  — stats label */
+  --fs-nav: 1rem;               /* 16px  — nav, tabs, home tagline (mobile) */
+  --fs-body-mobile: 0.9375rem;  /* 15px  — body copy (mobile) */
+  --fs-body-tablet: 1rem;       /* 16px  — body copy (tablet) */
+  --fs-body: 1.125rem;          /* 18px  — body copy (desktop) */
+
+  /* Type scale — line heights (unitless, measured from the screens) */
+  --lh-display: 1.15;     /* Bellefair 144/80 (home title) */
+  --lh-title: 1.15;       /* Bellefair 96/80/56/32/28 */
+  --lh-heading: 1.2;      /* Barlow Condensed */
+  --lh-body: 1.8;         /* Barlow */
+
+  /* Letter spacing — every Barlow Condensed run is 15% on the screens */
+  --ls-condensed: 0.15em;
+
+  /* Radii */
+  --radius-circle: 50%;     /* EXPLORE button, dots */
+  --radius-full: 999px;
+
+  /* Layout */
+  --nav-height: 5.5rem;         /* 88px mobile bar */
+  --panel-width: 15.875rem;     /* 254px mobile nav panel */
+  --measure: 27.75rem;          /* 444px body-copy measure on desktop */
+  --size-dot: 0.625rem;         /* 10px  crew pagination dot (desktop: 15px) */
+  --dot-gap: 1rem;              /* 16px  gap between crew dots (desktop: 40px) */
+}
+
+
+/* ==========================================================================
+   2. Reset
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+ul[class],
+ol[class] {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+
+/* ==========================================================================
+   3. Base / typography
+   ========================================================================== */
+
+body {
+  min-height: 100vh;
+  background-color: var(--clr-dark);
+  color: var(--clr-light);
+  font-family: var(--font-body);
+  font-size: var(--fs-body-mobile);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Bellefair headings. The display sizes (home title, destination name) tighten
+   the line height to --lh-display in their own page rules. */
+h1,
+h2,
+h3,
+h4 {
+  color: var(--clr-white);
+  font-family: var(--font-display);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-title);
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: var(--fs-title-md);
+}
+
+h2 {
+  font-size: var(--fs-title-md);
+}
+
+h3 {
+  font-size: var(--fs-title-sm);
+}
+
+h4 {
+  font-size: var(--fs-title-sm);
+}
+
+p {
+  max-width: 60ch;
+}
+
+/* Section titles: "01 PICK YOUR DESTINATION", "02 MEET YOUR CREW", ... */
+.heading-5 {
+  color: var(--clr-white);
+  font-family: var(--font-condensed);
+  font-size: var(--fs-heading-5);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-condensed);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+}
+
+/* The "01" number is 25% white and sits 24px before the label at every width. */
+.heading-5__number {
+  margin-inline-end: 1.5rem; /* 24px */
+  font-weight: var(--fw-bold);
+  opacity: 0.25;
+}
+
+/* Small uppercase label: "AVG. DISTANCE", "EST. TRAVEL TIME" */
+.subheading-2 {
+  color: var(--clr-light);
+  font-family: var(--font-condensed);
+  font-size: var(--fs-sub-2);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-condensed);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+}
+
+/* Large display value: "384,400 KM", "3 DAYS" */
+.subheading-1 {
+  color: var(--clr-white);
+  font-family: var(--font-display);
+  font-size: var(--fs-sub-1);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-title);
+  text-transform: uppercase;
+}
+
+:focus-visible {
+  outline: 2px solid var(--clr-white);
+  outline-offset: 4px;
+}
+
+
+/* ==========================================================================
+   4. Layout utilities
+   ========================================================================== */
+
+/* Visible to assistive tech only. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Skip link: the first tab stop on every page. It sits above the viewport until
+   it has focus, so it never shifts the design but keyboard users can jump past
+   the header. The white focus ring would vanish on the white box, hence the
+   dark outline override. */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 10;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--clr-white);
+  color: var(--clr-dark);
+  font-family: var(--font-condensed);
+  font-size: var(--fs-nav);
+  letter-spacing: var(--ls-condensed);
+  text-transform: uppercase;
+  transform: translateY(-300%);
+  transition: transform 200ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.skip-link:focus-visible {
+  outline-color: var(--clr-dark);
+  outline-offset: -4px;
+}
+
+/* Centred content column that never exceeds the design's 1110px content width. */
+.container {
+  width: 100%;
+  max-width: 69.375rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+
+/* ==========================================================================
+   5. Header + nav
+   Mobile is the base: a transparent bar with the logo and a hamburger that
+   opens a right-hand overlay panel. The panel's open state is derived from the
+   button's `aria-expanded`, so the ARIA state and the visuals cannot drift.
+   ========================================================================== */
+
+.header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  padding-inline: 1.5rem;
+}
+
+.header__logo {
+  flex: none;
+  /* The logo is 40px; 2px of padding on each side lifts the target to 44px
+     without moving it, because the negative margin gives the space back. */
+  padding: 0.125rem;
+  margin: -0.125rem;
+  transition: opacity 200ms ease;
+}
+
+.header__logo:hover {
+  opacity: 0.8;
+}
+
+.header__logo img {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Hamburger / close. Sits above the panel it controls. The 44px box is the
+   touch target; the icon itself stays 24×21 and the negative margin keeps its
+   centre exactly where the design puts it. */
+.header__toggle {
+  position: relative;
+  z-index: 2;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-inline-end: -0.625rem;
+  background-image: url("./assets/icon-hamburger.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 1.5rem 1.3125rem;
+}
+
+.header__toggle[aria-expanded="true"] {
+  background-image: url("./assets/icon-close.svg");
+}
+
+/* The rule between the logo and the links is a desktop-only detail. */
+.header__divider {
+  display: none;
+}
+
+/* Mobile: off-canvas panel, revealed by the toggle's aria-expanded state. */
+.header__nav {
+  position: fixed;
+  inset-block: 0;
+  right: 0;
+  z-index: 1;
+  width: var(--panel-width);
+  padding: 8.3125rem 0 2rem 2rem;
+  background-color: var(--clr-surface-strong);
+  -webkit-backdrop-filter: blur(80px);
+  backdrop-filter: blur(80px);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform 300ms ease, visibility 300ms;
+}
+
+.header__toggle[aria-expanded="true"] ~ .header__nav {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.header__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.header__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--clr-white);
+  font-family: var(--font-condensed);
+  font-size: var(--fs-nav);
+  font-weight: var(--fw-regular);
+  letter-spacing: var(--ls-condensed);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+}
+
+.header__number {
+  font-weight: var(--fw-bold);
+}
+
+/* The panel links are 19.2px of text in a 32px gap. Extending 12.8px above and
+   below gives a 44.8px touch target without moving anything or overlapping the
+   neighbouring link (32 - 25.6 = 6.4px still separates them). */
+.header__link::before {
+  content: "";
+  position: absolute;
+  inset-block: -0.8rem;
+  inset-inline: 0;
+}
+
+/* Active / hover indicator: a white rule on the item box. */
+.header__link::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: var(--clr-white);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.header__link:hover::after {
+  opacity: 0.5;
+}
+
+.header__link[aria-current="page"]::after {
+  opacity: 1;
+}
+
+/* Keep the page behind an open panel from scrolling (mobile only). */
+.has-nav-open {
+  overflow: hidden;
+}
+
+
+/* ==========================================================================
+   6. Components
+   ========================================================================== */
+
+/* Circular "display" button — the EXPLORE control on the home page.
+   Mobile is 144px; tablet and desktop are 272px (section 8). */
+.button {
+  display: grid;
+  place-items: center;
+  width: 9rem;
+  height: 9rem;
+  border-radius: var(--radius-circle);
+  background-color: var(--clr-white);
+  box-shadow: 0 0 0 0 var(--clr-hover-wash);
+  color: var(--clr-dark);
+  font-family: var(--font-display);
+  font-size: 1.25rem; /* 20px */
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  transition: box-shadow 300ms ease;
+}
+
+/* Hover / focus ring: an 88px white stroke drawn outside the circle, i.e. 44px
+   on every side, matching "States=Display Button - Hover". */
+.button:hover,
+.button:focus-visible {
+  box-shadow: 0 0 0 2.75rem var(--clr-hover-wash);
+}
+
+
+/* ==========================================================================
+   7. Pages
+   ========================================================================== */
+
+/* --- Home ---------------------------------------------------------------- */
+
+/* The home hero is the padded area below the header: the text block and the
+   button share the leftover space differently at each width (section 8). */
+.home {
+  background-color: var(--clr-dark);
+  background-image: url("./assets/background-home-mobile.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.home__main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - var(--nav-height));
+  padding: 1.5rem;
+}
+
+.home__hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 69.375rem;
+  margin-inline: auto;
+}
+
+.home__texts {
+  max-width: 100%;
+  text-align: center;
+}
+
+.home__tagline {
+  color: var(--clr-light);
+  font-family: var(--font-condensed);
+  font-size: var(--fs-nav);
+  letter-spacing: var(--ls-condensed);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+}
+
+/* The 24px gaps above and below the title are the same at every width. */
+.home__title {
+  margin-block: 1.5rem;
+  font-size: var(--fs-display-sm);
+  line-height: var(--lh-display);
+}
+
+/* Holds the EXPLORE button and centres it in the space left below the texts.
+   The min-height stops that space collapsing on short viewports: the button
+   (9rem) always keeps 4rem above and below, so the 44px hover ring can never
+   reach up into the description. 9 + 4 + 4 = 17rem. */
+.home__cta {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 17rem;
+}
+
+
+/* --- Destination --------------------------------------------------------- */
+
+.destination {
+  background-color: var(--clr-dark);
+  background-image: url("./assets/background-destination-mobile.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Same hero model as the home page: the padded area under the header fills the
+   viewport and the inner column takes the leftover height, so the content sits
+   in the middle of the screen exactly as the design frame does. */
+.destination__main {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--nav-height));
+  padding: 1.5rem;
+}
+
+.destination__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 69.375rem;
+  margin-inline: auto;
+}
+
+.destination__title {
+  font-size: var(--fs-nav); /* 16px */
+  text-align: center;
+}
+
+/* Stacked on mobile and tablet, two columns from the desktop design up. On
+   mobile the explanation keeps its natural height and the image absorbs the
+   slack (`1fr auto`); on tablet both rows split the space evenly (`1fr 1fr`),
+   which is how the frames are drawn. */
+.destination__content {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  justify-items: center;
+  margin-block-start: 1.5rem;
+}
+
+.destination__image {
+  display: grid;
+  place-items: center;
+}
+
+.destination__image img {
+  width: 9.375rem; /* 150px */
+  height: 9.375rem;
+}
+
+.destination__info {
+  width: 100%;
+  text-align: center;
+}
+
+.destination__tab-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+}
+
+/* The 3px rule is a bottom border, so the item is exactly 32px tall: 19.2px of
+   text, 10px of padding and the border. */
+.destination__tab {
+  position: relative;
+  display: block;
+  padding-block-end: 0.625rem; /* 10px */
+  border-bottom: 3px solid transparent;
+  color: var(--clr-light);
+  font-family: var(--font-condensed);
+  font-size: var(--fs-nav); /* 16px */
+  letter-spacing: var(--ls-condensed);
+  line-height: var(--lh-heading);
+  text-transform: uppercase;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+/* 31.6px tall on its own (28.6px of padding box); 8px above and below make a
+   44.6px touch target. The list's 32px row gap absorbs the overhang, so labels
+   never overlap. */
+.destination__tab::before {
+  content: "";
+  position: absolute;
+  inset-block: -0.5rem;
+  inset-inline: 0;
+}
+
+.destination__tab:hover {
+  color: var(--clr-white);
+  border-bottom-color: var(--clr-line-strong);
+}
+
+.destination__tab[aria-current="page"] {
+  color: var(--clr-white);
+  border-bottom-color: var(--clr-white);
+}
+
+.destination__name {
+  margin-block-start: 1.5rem; /* 24px below the tabs */
+  font-size: var(--fs-title-md); /* 56px */
+  line-height: var(--lh-title);
+}
+
+.destination__desc {
+  max-width: none;
+  margin-block-start: 1rem; /* 16px below the name */
+}
+
+.destination__line {
+  margin-block: 1.5rem; /* 24px either side */
+  border: 0;
+  border-top: 1px solid var(--clr-line);
+}
+
+.destination__stats {
+  display: grid;
+  gap: 1.5rem; /* 24px */
+}
+
+.destination__stat-value {
+  margin-block-start: 0.75rem; /* 12px below the label */
+}
+
+
+/* --- Crew ---------------------------------------------------------------- */
+
+.crew {
+  background-color: var(--clr-dark);
+  background-image: url("./assets/background-crew-mobile.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Same hero model as Home/Destination: the padded area under the header fills
+   the viewport and the inner column takes the leftover height. */
+.crew__main {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--nav-height));
+  padding: 1.5rem;
+}
+
+.crew__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 69.375rem;
+  margin-inline: auto;
+  /* Flex items default to `min-height: auto`, which would stop the column
+     shrinking to the height of `.crew__main`; the photo could then never be
+     clipped by the viewport edge. */
+  min-height: 0;
+}
+
+.crew__title {
+  font-size: var(--fs-nav); /* 16px */
+  text-align: center;
+}
+
+/* Mobile and tablet stack the explanation above the photo. The explanation
+   keeps its natural height (`auto`) and the photo takes the slack (`1fr`),
+   which is how the frames are drawn. */
+.crew__content {
+  flex: 1;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 2rem; /* 32px between the explanation and the photo */
+  margin-block-start: 1.5rem; /* 24px below the page title */
+  min-height: 0;
+}
+
+/* The 40px top padding pushes the rank/name/bio block down from the content
+   edge; on desktop the block is centred in the full column instead. */
+.crew__info {
+  display: flex;
+  flex-direction: column;
+  padding-block-start: 2.5rem; /* 40px */
+  text-align: center;
+}
+
+/* Takes the slack above the dots and centres the text block in it. */
+.crew__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* The role is white at 50% opacity, not the body's slate. */
+.crew__role {
+  color: var(--clr-white);
+  font-family: var(--font-display);
+  font-size: var(--fs-heading-7); /* 18px */
+  line-height: var(--lh-title);
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.crew__name {
+  margin-block-start: 0.5rem; /* 8px below the role */
+  font-size: var(--fs-title-xs); /* 24px */
+  line-height: var(--lh-title);
+}
+
+.crew__bio {
+  max-width: none;
+  margin-block-start: 1.5rem; /* 24px below the name */
+  /* The mobile frames pad the bio to six lines so the dots and photo sit at
+     the same height on every crew page (the .fig text carries trailing
+     newlines to that effect). 6 × 27px line-height. */
+  min-height: 10.125rem; /* 162px */
+}
+
+.crew__dots {
+  margin-block-start: 1.5rem; /* 24px below the text block */
+}
+
+.crew__dot-list {
+  display: flex;
+  justify-content: center;
+  gap: var(--dot-gap);
+}
+
+/* The link *is* the dot: a 10px circle whose ::before widens the hit area to
+   26px without changing the visual (the 16px gap means neighbours only touch). */
+.crew__dot {
+  position: relative;
+  display: block;
+  width: var(--size-dot);
+  height: var(--size-dot);
+  border-radius: var(--radius-circle);
+  background-color: var(--clr-dot);
+  transition: background-color 200ms ease;
+}
+
+.crew__dot::before {
+  content: "";
+  position: absolute;
+  inset: -0.5rem; /* 8px on every side */
+}
+
+.crew__dot:hover {
+  background-color: var(--clr-line-strong);
+}
+
+.crew__dot[aria-current="page"] {
+  background-color: var(--clr-white);
+}
+
+/* Mobile and desktop centre the photo; the tablet rule lets it bleed past the
+   bottom edge of the frame instead (section 8). */
+.crew__image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.crew__image img {
+  width: auto;
+  max-width: 100%;
+  height: 21.25rem; /* 340px */
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+
+/* --- Technology ---------------------------------------------------------- */
+
+.technology {
+  background-color: var(--clr-dark);
+  background-image: url("./assets/background-technology-mobile.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Mobile stacks the image above the explanation and the content is shorter than
+   the viewport, so the column keeps its natural height here. There is no bottom
+   padding: the design's 880px frame already leaves room below the content, and
+   the extra 24px was enough to tip the column just past the viewport height,
+   which flipped a scrollbar on and off. The tablet and desktop layouts re-add a
+   definite height for their vertical centring in section 8. */
+.technology__main {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem 0;
+}
+
+.technology__inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 69.375rem;
+  margin-inline: auto;
+  min-height: 0;
+}
+
+.technology__title {
+  font-size: var(--fs-nav); /* 16px */
+  text-align: center;
+}
+
+/* Mobile and tablet show the wide (landscape) crop, full-bleed: the negative
+   inline margin cancels the page padding so the image reaches both edges. */
+.technology__image {
+  overflow: hidden;
+  margin-block-start: 1.5rem; /* 24px below the page title */
+  margin-inline: -1.5rem;     /* full-bleed past the 24px page padding */
+}
+
+.technology__image img {
+  width: 100%;
+  height: 20.125rem; /* 322px */
+  object-fit: cover;
+}
+
+/* Stacked on mobile and tablet: the number row sits above the explanation. */
+.technology__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;              /* 40px between the numbers and the explanation */
+  margin-block-start: 2rem; /* 32px below the image */
+  text-align: center;
+}
+
+.technology__number-list {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* 16px */
+}
+
+/* The link *is* the circle: a 1px outline that fills white when active. */
+.technology__number {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;  /* 40px */
+  height: 2.5rem;
+  border: 1px solid var(--clr-line);
+  border-radius: var(--radius-full);
+  color: var(--clr-white);
+  font-family: var(--font-display);
+  font-size: var(--fs-heading-7); /* 18px */
+  line-height: 1;
+  transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease;
+}
+
+/* The circle's 38px padding box plus 3px on every side makes the 44px touch
+   target; the 16px gap between circles stays clear. */
+.technology__number::before {
+  content: "";
+  position: absolute;
+  inset: -0.1875rem;
+}
+
+.technology__number:hover {
+  border-color: var(--clr-white);
+}
+
+.technology__number[aria-current="page"] {
+  border-color: var(--clr-white);
+  background-color: var(--clr-white);
+  color: var(--clr-dark);
+}
+
+/* The "THE TERMINOLOGY…" label is white at 50% opacity, like the crew role. */
+.technology__label {
+  color: var(--clr-white);
+  font-family: var(--font-display);
+  font-size: var(--fs-heading-7); /* 18px */
+  line-height: var(--lh-title);
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.technology__name {
+  margin-block-start: 1rem; /* 16px below the label */
+  font-size: var(--fs-title-xs); /* 24px */
+  line-height: var(--lh-title);
+}
+
+.technology__desc {
+  max-width: none;
+  margin-block-start: 1rem; /* 16px below the name */
+}
+
+
+/* ==========================================================================
+   8. Media queries
+   Everything above is the mobile design. These blocks add the tablet (48em)
+   and desktop (75em) designs; because they come last, they always win.
+   ========================================================================== */
+
+/* Tablet and up */
+@media (min-width: 48em) {
+  :root {
+    --nav-height: 6rem; /* 96px */
+  }
+
+  .header {
+    padding-left: 2.5rem;
+    padding-right: 0;
+  }
+
+  .header__logo img {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .header__toggle {
+    display: none;
+  }
+
+  /* From tablet up the links are full-height header cells, so the mobile
+     target-extension would spill outside the header. Drop it. */
+  .header__link::before {
+    content: none;
+  }
+
+  .header__nav {
+    position: static;
+    display: flex;
+    flex: 1;
+    align-self: stretch; /* the glass bar is as tall as the header, not the links */
+    align-items: stretch;
+    justify-content: flex-end;
+    width: auto;
+    margin-left: 2.5rem;
+    padding: 0 2.5rem 0 0;
+    background-color: var(--clr-surface);
+    transform: none;
+    visibility: visible;
+  }
+
+  .header__list {
+    flex-direction: row;
+    gap: 3rem;
+  }
+
+  /* Full-height links put the 3px active/hover rule on the bottom edge of the
+     bar, as in the design, instead of under the text. */
+  .header__link {
+    height: 100%;
+  }
+
+  /* A full-height cell touches the top edge, so keep its focus ring inside the
+     bar instead of letting it be clipped by the viewport. */
+  .header__link:focus-visible {
+    outline-offset: -2px;
+  }
+
+  body {
+    font-size: var(--fs-body-tablet); /* 16px */
+  }
+
+  .button {
+    width: 17rem; /* 272px */
+    height: 17rem;
+    font-size: var(--fs-title-sm); /* 32px */
+  }
+
+  /* Home: background swap, tablet spacing, and a stacked hero whose text sits
+     at the top and whose button sits at the bottom of the padded area. */
+  .home {
+    background-image: url("./assets/background-home-tablet.jpg");
+  }
+
+  .home__main {
+    padding: 8rem 2.5rem; /* 128px / 40px */
+  }
+
+  .home__hero {
+    justify-content: space-between;
+  }
+
+  .home__texts {
+    max-width: 32rem; /* 512px */
+  }
+
+  .home__tagline {
+    font-size: var(--fs-heading-5); /* 28px */
+    letter-spacing: var(--ls-condensed);
+  }
+
+  .home__title {
+    font-size: var(--fs-display); /* 144px */
+    line-height: var(--lh-display);
+  }
+
+  .home__cta {
+    flex: none;
+    /* space-between already pushes the button to the bottom (a 67px gap at the
+       design height); this margin is the floor so a short viewport cannot bring
+       the button within reach of the description. */
+    margin-block-start: 4rem;
+  }
+
+  /* Destination: tablet background, 40px padding, left-aligned title and a
+     stacked content column whose two rows split the leftover height. */
+  .destination {
+    background-image: url("./assets/background-destination-tablet.jpg");
+  }
+
+  .destination__main {
+    padding: 2.5rem; /* 40px */
+  }
+
+  .destination__title {
+    font-size: var(--fs-heading-6); /* 20px */
+    text-align: left;
+  }
+
+  .destination__content {
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .destination__image img {
+    width: 18.75rem; /* 300px */
+    height: 18.75rem;
+  }
+
+  .destination__info {
+    max-width: 32.125rem; /* 514px */
+    text-align: left;
+  }
+
+  .destination__tab-list {
+    justify-content: flex-start;
+  }
+
+  .destination__name {
+    font-size: 5rem; /* 80px */
+  }
+
+  .destination__stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Crew: tablet background, left-aligned title, and a stacked column whose
+     photo bleeds 40px past the bottom padding, so the viewport edge cuts it
+     exactly as the tablet frames show. */
+  .crew {
+    background-image: url("./assets/background-crew-tablet.jpg");
+  }
+
+  /* A definite height (not min-height) is what lets the grid's `1fr` photo
+     row resolve against the leftover space, so the image is clipped by the
+     viewport edge instead of stretching the page. */
+  .crew__main {
+    height: calc(100vh - var(--nav-height));
+    padding: 2.5rem; /* 40px */
+  }
+
+  .crew__title {
+    font-size: var(--fs-heading-6); /* 20px */
+    text-align: left;
+  }
+
+  /* The explanation column is 512px wide and centred in the 688px content. */
+  .crew__info {
+    width: 100%;
+    max-width: 32rem; /* 512px */
+    margin-inline: auto;
+  }
+
+  /* `minmax(0, 1fr)` lets the photo row shrink so the image is clipped by the
+     bottom of the screen rather than pushing the page taller. */
+  .crew__content {
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+
+  .crew__role {
+    font-size: var(--fs-title-xs); /* 24px */
+  }
+
+  .crew__name {
+    margin-block-start: 1rem; /* 16px */
+    font-size: 2.5rem; /* 40px */
+  }
+
+  .crew__bio {
+    /* Padded to four lines (4 × 28.8px) so the dots and photo do not move
+       between crew pages, as the tablet frames show. */
+    min-height: 7.2rem; /* 115.2px */
+  }
+
+  .crew__image {
+    align-items: flex-start;
+    /* Let the `1fr` row shrink so the photo is clipped by the bottom of the
+       screen instead of pushing the page taller. */
+    min-height: 0;
+    margin-block-end: -2.5rem; /* pull the frame into the main padding */
+  }
+
+  .crew__image img {
+    height: 35rem; /* 560px */
+  }
+
+  /* Technology: tablet background, left-aligned title, and a full-bleed image
+     row above the centred number row and explanation. */
+  .technology {
+    background-image: url("./assets/background-technology-tablet.jpg");
+  }
+
+  .technology__main {
+    min-height: calc(100vh - var(--nav-height));
+    padding: 2.5rem; /* 40px */
+  }
+
+  .technology__title {
+    font-size: var(--fs-heading-6); /* 20px */
+    text-align: left;
+  }
+
+  .technology__image {
+    margin-inline: -2.5rem; /* full-bleed past the 40px page padding */
+  }
+
+  .technology__image img {
+    height: 26.3125rem; /* 421px */
+  }
+
+  /* The number row and the explanation are 512px wide, centred in the 688px
+     content column, as the tablet frames show. */
+  .technology__info {
+    width: 100%;
+    max-width: 32rem; /* 512px */
+    margin-inline: auto;
+  }
+
+  .technology__number {
+    width: 3.5rem;  /* 56px */
+    height: 3.5rem;
+    font-size: var(--fs-title-xs); /* 24px */
+  }
+
+  .technology__label {
+    font-size: var(--fs-title-xs); /* 24px */
+  }
+
+  .technology__name {
+    font-size: 2.5rem; /* 40px */
+  }
+}
+
+/* Desktop */
+@media (min-width: 75em) {
+  :root {
+    --nav-height: 8.5rem; /* 136px */
+  }
+
+  .header {
+    padding-left: 4rem;
+  }
+
+  .header__divider {
+    display: block;
+    flex: 0 0 25.375rem; /* 406px */
+    height: 1px;
+    margin-left: 4rem;
+    margin-right: -2rem; /* tucks 32px under the translucent bar */
+    background-color: var(--clr-line);
+  }
+
+  .header__nav {
+    margin-left: 0;
+    padding-right: 4rem;
+  }
+
+  body {
+    font-size: var(--fs-body); /* 18px */
+  }
+
+  /* Home: the hero becomes a row anchored to the bottom of the padded area,
+     text left / button right, both centred on each other. */
+  .home {
+    background-image: url("./assets/background-home-desktop.jpg");
+  }
+
+  .home__main {
+    justify-content: flex-end;
+  }
+
+  .home__hero {
+    flex: none;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .home__texts {
+    max-width: 33.75rem; /* 540px */
+    text-align: left;
+  }
+
+  /* The row layout puts the button beside the texts, so the tablet's stacking
+     margin must not offset it vertically. */
+  .home__cta {
+    margin-block-start: 0;
+  }
+
+  /* Destination: desktop background, 48px padding, and the two-column row from
+     the design (539px + 32px + 539px = 1110px) with the 40px gaps around the
+     separator. */
+  .destination {
+    background-image: url("./assets/background-destination-desktop.jpg");
+  }
+
+  .destination__main {
+    padding: 3rem; /* 48px */
+  }
+
+  .destination__title {
+    font-size: var(--fs-heading-5); /* 28px */
+  }
+
+  .destination__content {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .destination__image img {
+    width: 30rem; /* 480px */
+    height: 30rem;
+  }
+
+  .destination__info {
+    max-width: var(--measure); /* 444px */
+  }
+
+  .destination__name {
+    margin-block-start: 2.5rem; /* 40px below the tabs */
+    font-size: var(--fs-title-lg); /* 96px */
+  }
+
+  .destination__line {
+    margin-block: 2.5rem; /* 40px either side */
+  }
+
+  /* Crew: desktop background, two equal 539px columns (539 + 32 + 539 = 1110),
+     left-aligned text, and the dots pinned to the bottom of the info column. */
+  .crew {
+    background-image: url("./assets/background-crew-desktop.jpg");
+  }
+
+  .crew__main {
+    padding: 3rem; /* 48px */
+  }
+
+  .crew__title {
+    font-size: var(--fs-heading-5); /* 28px */
+  }
+
+  .crew__content {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
+
+  .crew__info {
+    max-width: none;
+    padding-block-start: 0;
+    text-align: left;
+  }
+
+  .crew__role {
+    font-size: var(--fs-title-sm); /* 32px */
+  }
+
+  .crew__name {
+    font-size: var(--fs-title-md); /* 56px */
+  }
+
+  /* Desktop centres the text in the full column instead of padding it. */
+  .crew__bio {
+    min-height: 0;
+  }
+
+  /* The 15px dot row plus 48px of padding make the design's 63px frame. */
+  .crew__dots {
+    margin-block-start: 0;
+    padding-block-end: 3rem; /* 48px */
+  }
+
+  .crew__dot-list {
+    justify-content: flex-start;
+    gap: 2.5rem; /* 40px */
+  }
+
+  .crew__dot {
+    width: 0.9375rem; /* 15px */
+    height: 0.9375rem;
+  }
+
+  /* The tablet photo bleeds off the bottom; the desktop one is centred. */
+  .crew__image {
+    align-items: center;
+    margin-block-end: 0;
+  }
+
+  .crew__image img {
+    height: 42.25rem; /* 676px */
+  }
+
+  /* Technology: desktop background. The image column is flush to the right
+     viewport edge (there is no right padding) and the text column is
+     right-aligned to a 635px measure, so its left edge lands on the design's
+     165px line. */
+  .technology {
+    background-image: url("./assets/background-technology-desktop.jpg");
+  }
+
+  .technology__main {
+    padding: 3rem 0 3rem 3rem; /* 48px; the right edge stays flush */
+  }
+
+  .technology__inner {
+    display: grid;
+    grid-template-areas:
+      "title ."
+      "info image";
+    grid-template-columns: minmax(0, 1fr) minmax(0, 38rem);
+    grid-template-rows: auto 1fr;
+    column-gap: 2rem; /* 32px */
+    row-gap: 1.5rem;  /* 24px below the page title */
+    align-items: center;
+    max-width: none;
+    margin-inline: 0;
+  }
+
+  .technology__title {
+    grid-area: title;
+    justify-self: end;
+    width: 100%;
+    max-width: 39.6875rem; /* 635px */
+    font-size: var(--fs-heading-5); /* 28px */
+    text-align: left;
+  }
+
+  /* The portrait crop (608×600) is centred in the image column. */
+  .technology__image {
+    grid-area: image;
+    height: 37.5rem; /* 600px */
+    margin-block-start: 0;
+    margin-inline: 0;
+  }
+
+  .technology__image img {
+    height: 100%;
+  }
+
+  /* Numbers stack vertically, 64px to the left of the explanation. */
+  .technology__info {
+    grid-area: info;
+    flex-direction: row;
+    align-items: center;
+    justify-self: end;
+    gap: 4rem; /* 64px */
+    width: 100%;
+    max-width: 39.6875rem; /* 635px */
+    /* Reset the tablet rule's `margin-inline: auto`; with an auto inline margin
+       the item would centre in its grid column and `justify-self: end` would
+       never apply. */
+    margin-inline: 0;
+    margin-block-start: 0;
+    text-align: left;
+  }
+
+  .technology__pagination {
+    flex: none;
+  }
+
+  .technology__number-list {
+    flex-direction: column;
+    gap: 2rem; /* 32px */
+  }
+
+  .technology__number {
+    width: 5rem;  /* 80px */
+    height: 5rem;
+    font-size: var(--fs-title-sm); /* 32px */
+  }
+
+  .technology__explanation {
+    flex: 1;
+  }
+
+  .technology__label {
+    font-size: var(--fs-title-sm); /* 32px */
+  }
+
+  .technology__name {
+    font-size: var(--fs-title-md); /* 56px */
+  }
+
+  .technology__desc {
+    margin-block-start: 1.5rem; /* 24px below the name */
+  }
+}
+
+/* Respect a reduced-motion preference: no sliding, no fades. */
+@media (prefers-reduced-motion: reduce) {
+  .skip-link,
+  .header__logo,
+  .header__nav,
+  .header__link::after,
+  .destination__tab,
+  .crew__dot,
+  .technology__number,
+  .button {
+    transition: none;
+  }
+}
+
