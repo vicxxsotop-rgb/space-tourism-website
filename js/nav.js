@@ -5,14 +5,14 @@
 (function () {
   "use strict";
 
-  var toggle = document.querySelector(".header__toggle");
-  var nav = document.querySelector(".header__nav");
+  const toggle = document.querySelector(".header__toggle");
+  const nav = document.querySelector(".header__nav");
 
   if (!toggle || !nav) {
     return;
   }
 
-  var desktopQuery = window.matchMedia("(min-width: 48em)");
+  const desktopQuery = window.matchMedia("(min-width: 48em)");
 
   function isOpen() {
     return toggle.getAttribute("aria-expanded") === "true";
