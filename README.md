@@ -177,8 +177,7 @@ which is a conscious trade-off, noted below.
 ### AI Collaboration
 
 I used **OpenCode** as a research assistant to read the design file and to work through
-questions and problems — not to write the site. The HTML, `style.css` and `js/nav.js` in
-this repository were written by me.
+questions and problems.
 
 - **What I used the assistant for:** decoding the `.fig` into `design/DESIGN-SPEC.md`
   (frame sizes, type scale, colours, letter-spacing), answering questions about how the
