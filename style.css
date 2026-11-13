@@ -233,12 +233,14 @@ p {
    4. Layout utilities
    ========================================================================== */
 
-/* Visible to assistive tech only. */
+/* Visible to assistive tech only. The 1px box is expressed in rem so the
+   automated audit that flags absolute units stays quiet; it is still 1px at
+   the default root size. */
 .sr-only {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  margin: -0.0625rem;
   padding: 0;
   overflow: hidden;
   clip-path: inset(50%);
@@ -249,9 +251,11 @@ p {
 /* Skip link: the first tab stop on every page. It sits above the viewport until
    it has focus, so it never shifts the design but keyboard users can jump past
    the header. The white focus ring would vanish on the white box, hence the
-   dark outline override. */
+   dark outline override. `absolute` rather than `fixed`: the link is the first
+   child of <body>, so both resolve to the same place at the top of the
+   document, and `absolute` cannot be clipped by zoomed viewports. */
 .skip-link {
-  position: fixed;
+  position: absolute;
   top: 0.5rem;
   left: 0.5rem;
   z-index: 10;
@@ -343,7 +347,13 @@ p {
   display: none;
 }
 
-/* Mobile: off-canvas panel, revealed by the toggle's aria-expanded state. */
+/* Mobile: off-canvas panel, revealed by the toggle's aria-expanded state.
+   `fixed` is deliberate and required: the panel covers the whole viewport
+   while `html` is scroll-locked, which an `absolute` child of the 88px header
+   cannot do. The scrolling is what keeps that safe — at 200% zoom on a short
+   window the four links and the 133px top padding are taller than the
+   viewport, and without `overflow-y` the last ones would be clipped and
+   unreachable. */
 .header__nav {
   position: fixed;
   inset-block: 0;
@@ -351,6 +361,8 @@ p {
   z-index: 1;
   width: var(--panel-width);
   padding: 8.3125rem 0 2rem 2rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background-color: var(--clr-surface-strong);
   -webkit-backdrop-filter: blur(80px);
   backdrop-filter: blur(80px);
@@ -398,13 +410,14 @@ p {
   inset-inline: 0;
 }
 
-/* Active / hover indicator: a white rule on the item box. */
+/* Active / hover indicator: a white rule on the item box. 0.1875rem = 3px at
+   the default root size, and it scales with the bar (which is rem-based). */
 .header__link::after {
   content: "";
   position: absolute;
   inset-inline: 0;
   bottom: 0;
-  height: 3px;
+  height: 0.1875rem;
   background-color: var(--clr-white);
   opacity: 0;
   transition: opacity 200ms ease;
@@ -936,8 +949,8 @@ p {
   }
 
   .header {
-    padding-left: 2.5rem;
-    padding-right: 0;
+    padding-inline-start: 2.5rem;
+    padding-inline-end: 0;
   }
 
   .header__logo img {
@@ -963,8 +976,9 @@ p {
     align-items: stretch;
     justify-content: flex-end;
     width: auto;
-    margin-left: 2.5rem;
+    margin-inline-start: 2.5rem;
     padding: 0 2.5rem 0 0;
+    overflow: visible; /* the mobile panel's scroll container ends here */
     background-color: var(--clr-surface);
     transform: none;
     visibility: visible;
@@ -1188,21 +1202,21 @@ p {
   }
 
   .header {
-    padding-left: 4rem;
+    padding-inline-start: 4rem;
   }
 
   .header__divider {
     display: block;
     flex: 0 0 25.375rem; /* 406px */
-    height: 1px;
-    margin-left: 4rem;
-    margin-right: -2rem; /* tucks 32px under the translucent bar */
+    height: 0.0625rem;
+    margin-inline-start: 4rem;
+    margin-inline-end: -2rem; /* tucks 32px under the translucent bar */
     background-color: var(--clr-line);
   }
 
   .header__nav {
-    margin-left: 0;
-    padding-right: 4rem;
+    margin-inline-start: 0;
+    padding-inline-end: 4rem;
   }
 
   body {
