@@ -158,7 +158,6 @@ which is a conscious trade-off, noted below.
 - **Self-host the fonts.** Lighthouse estimates 830–900ms of render-blocking time from the
   Google Fonts stylesheet on a throttled connection. Four WOFF2 files served from the same
   origin would remove that round trip; the design would not change.
-- **Deploy it.** GitHub Pages, one push, no build step.
 - **Optional smoke tests.** One Playwright test per page group (page loads, nav works, a
   tab navigates) would lock in the behaviour the manual protocol checks today.
 
