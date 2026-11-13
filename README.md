@@ -99,8 +99,10 @@ bar was 19.2px tall and the active rule sat under the text instead of on the bar
 
 The last pass was accessibility. A skip link is the first tab stop on every page, `main`
 carries `id="main" tabindex="-1"`, `aria-current="page"` marks the active page in the
-header and the active item in each section, and every styled list keeps its list semantics
-with `role="list"` (Safari drops them when `list-style: none` is used). Touch targets are
+header and the active item in each section, and every styled list keeps its list semantics:
+`list-style: none` drops them in Safari only when the list is *not* inside a `<nav>`, and
+here they all are (header, destination tabs, crew dots, technology numbers), so no ARIA role
+is needed. Touch targets are
 44px wherever the layout allows — the crew dots can only reach 26px before they collide —
 using invisible `::before` areas that do not move a pixel.
 
