@@ -176,20 +176,23 @@ which is a conscious trade-off, noted below.
 
 ### AI Collaboration
 
-I used **OpenCode** to implement the site from the Figma file, and reviewed the result
-against the design, the keyboard and Lighthouse at every step.
+I used **OpenCode** as a research assistant to read the design file and to work through
+questions and problems — not to write the site. The HTML, `style.css` and `js/nav.js` in
+this repository were written by me.
 
-- **What the assistant did:** decoded the `.fig` into a geometry spec, wrote the 12 HTML
-  pages, `style.css` and `js/nav.js`, and ran the measurement passes (viewport sweeps,
-  contrast ratios, keyboard walkthroughs, Lighthouse).
-- **What I decided:** full implementation rather than a guided build, the static
-  multi-page approach (the tabs are links, not client-side tabs), one shared stylesheet,
-  and the Google Fonts CDN instead of self-hosting.
-- **What worked well:** the measurement loop — render in an iframe at an exact viewport,
-  compare boxes, fix, re-measure. It found the nav-bar height bug and a focus ring that
-  would have been clipped at the edge of the header bar.
-- **What needed a human:** visual judgement against the design, and the decision to stop
-  optimising once the site cleared its performance bar instead of chasing a perfect score.
+- **What I used the assistant for:** decoding the `.fig` into `design/DESIGN-SPEC.md`
+  (frame sizes, type scale, colours, letter-spacing), answering questions about how the
+  Figma file is organised, and talking through specific problems such as the nav bar's
+  height and the focus ring at the edge of the header.
+- **What I decided:** the static multi-page approach (the tabs are links, not client-side
+  tabs), one shared stylesheet, mobile-first CSS with two breakpoints, and the Google Fonts
+  CDN instead of self-hosting.
+- **What worked well:** having the decoded geometry to check my own measurements against.
+  When the design and the rendered page disagreed, the spec settled the question instead of
+  guesswork.
+- **What stayed with me:** the implementation, the visual judgement against the design, and
+  the decision to stop optimising once the site cleared its performance bar instead of
+  chasing a perfect score.
 
 ## Author
 
