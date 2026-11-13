@@ -104,7 +104,9 @@ header and the active item in each section, and every styled list keeps its list
 here they all are (header, destination tabs, crew dots, technology numbers), so no ARIA role
 is needed. Touch targets are
 44px wherever the layout allows — the crew dots can only reach 26px before they collide —
-using invisible `::before` areas that do not move a pixel.
+using invisible `::before` areas that do not move a pixel. The mobile panel is the only
+fixed-position element (an off-canvas overlay cannot be `absolute`), and it scrolls, so its
+links stay reachable at 200% zoom on a short window.
 
 ### Built with
 
