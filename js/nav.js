@@ -55,6 +55,19 @@
     close(false);
   });
 
+  /* Moving focus anywhere outside the panel dismisses it, except back to the
+     toggle: otherwise Tab past the last link would leave the focus ring behind
+     the panel, on a control the user cannot see, and Shift+Tab past the toggle
+     would leave the panel open with focus on the logo. Listening on `focusin`
+     also means a window that loses focus (another tab or app) never closes the
+     panel, because no focus enters the document. */
+  document.addEventListener("focusin", function (event) {
+    const next = event.target;
+    if (isOpen() && !nav.contains(next) && next !== toggle) {
+      close(false);
+    }
+  });
+
   /* Resizing into the desktop layout must not leave a stale open state behind. */
   desktopQuery.addEventListener("change", function (event) {
     if (event.matches) {
