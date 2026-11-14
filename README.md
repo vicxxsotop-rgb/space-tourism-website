@@ -102,11 +102,17 @@ carries `id="main" tabindex="-1"`, `aria-current="page"` marks the active page i
 header and the active item in each section, and every styled list keeps its list semantics:
 `list-style: none` drops them in Safari only when the list is *not* inside a `<nav>`, and
 here they all are (header, destination tabs, crew dots, technology numbers), so no ARIA role
-is needed. Touch targets are
+is needed. Every in-page link (the tabs, the dots, the numbers and the home CTA) ends in
+`#main`, so choosing another item lands with focus inside the content instead of back at the
+top of the header; `main` also has `scroll-margin-block-start` so the fragment never scrolls
+the header out of view, and its focus ring is suppressed because nothing in `main` is a
+control. Touch targets are
 44px wherever the layout allows — the crew dots can only reach 26px before they collide —
 using invisible `::before` areas that do not move a pixel. The mobile panel is the only
 fixed-position element (an off-canvas overlay cannot be `absolute`), and it scrolls, so its
-links stay reachable at 200% zoom on a short window.
+links stay reachable at 200% zoom on a short window. It also closes as soon as focus leaves
+it — Tab past the last link, or Shift+Tab past the toggle — so the focus ring is never left
+on a control hidden behind the panel; losing window focus does not close it.
 
 ### Built with
 

@@ -287,6 +287,21 @@ p {
   padding-inline: 1.5rem;
 }
 
+/* In-page links (destination tabs, crew dots, technology numbers, the home
+   CTA) end in #main, so a page change hands focus to the content instead of
+   back to the header. `main` is focusable only because it carries tabindex="-1":
+   - scroll-margin keeps the header on screen; without it the fragment would
+     scroll the site's own header out of view on short viewports.
+   - the outline is suppressed because nothing inside `main` is a control; the
+     next Tab still lands on a visible link. */
+main {
+  scroll-margin-block-start: var(--nav-height);
+}
+
+main:focus {
+  outline: none;
+}
+
 
 /* ==========================================================================
    5. Header + nav
